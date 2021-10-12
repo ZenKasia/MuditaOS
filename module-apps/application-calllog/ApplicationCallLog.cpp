@@ -51,10 +51,9 @@ namespace app
             return retMsg;
         }
 
-        if (msgl->messageType == MessageType::DBServiceNotification) {
-            for (auto &[name, window] : windowsStack.windows) {
-                window->onDatabaseMessage(msgl);
-            }
+        if (handleUI_DBNotification(msgl, [&](sys::Message *, const std::string &) {
+                return msgl->messageType == MessageType::DBServiceNotification;
+            })) {
             return sys::msgHandled();
         }
 

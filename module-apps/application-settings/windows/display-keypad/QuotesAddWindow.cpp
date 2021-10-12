@@ -158,11 +158,12 @@ namespace gui
                 quoteModel->edit(quoteData);
             }
 
-            auto backToOptionWindow = 1;
-            auto backToMainWindow   = 2;
+            // TODO fixme
+            //  auto backToOptionWindow = 1;
+            //  auto backToMainWindow   = 2;
 
-            auto windowToBack = quoteAction == QuoteAction::Add ? backToOptionWindow : backToMainWindow;
-            application->returnToPreviousWindow(windowToBack);
+            //  auto windowToBack = quoteAction == QuoteAction::Add ? backToOptionWindow : backToMainWindow;
+            //  application->returnToPreviousWindow(windowToBack);
         }
 
         return AppWindow::onInput(inputEvent);

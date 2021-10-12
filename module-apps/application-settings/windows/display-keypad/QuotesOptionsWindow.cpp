@@ -47,9 +47,10 @@ namespace gui
                                         utils::translate("app_settings_display_wallpaper_quotes_delete_confirmation"),
                                         "",
                                         [this]() {
-                                            auto backToQuotesMainWindow = 2;
+                                            // auto backToQuotesMainWindow = 2;
                                             quotesModel->remove(quote);
-                                            application->returnToPreviousWindow(backToQuotesMainWindow);
+                                            // TODO fixme
+                                            // application->returnToPreviousWindow(backToQuotesMainWindow);
                                             return true;
                                         }});
                 application->switchWindow(

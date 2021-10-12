@@ -41,12 +41,10 @@ namespace app
 
         auto msg = dynamic_cast<db::NotificationMessage *>(msgl);
         if (msg != nullptr) {
-            // window-specific actions
-            if (msg->interface == db::Interface::Name::AlarmEvents) {
-                for (auto &[name, window] : windowsStack.windows) {
-                    window->onDatabaseMessage(msg);
-                }
-            }
+            handleUI_DBNotification(msg, [](sys::Message *m, const std::string & /*name*/) {
+                auto msg = dynamic_cast<db::NotificationMessage *>(m);
+                return (msg != nullptr) && msg->interface == db::Interface::Name::AlarmEvents;
+            });
             return std::make_shared<sys::ResponseMessage>();
         }
 

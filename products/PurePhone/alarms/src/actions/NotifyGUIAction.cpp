@@ -16,11 +16,11 @@ namespace alarms
 
     bool NotifyGUIAction::execute(const AlarmEventRecord &record)
     {
-        auto r = std::make_unique<AlarmEventRecord>(record);
-        app::manager::Controller::sendAction(
-            &service,
-            app::manager::actions::ShowPopup,
-            std::make_unique<gui::AlarmPopupRequestParams>(gui::AlarmPopupType::AlarmRing, std::move(r)));
+            auto r  = std::make_unique<AlarmEventRecord>(record);
+            app::manager::Controller::sendAction(
+                &service,
+                app::manager::actions::ShowPopup,
+                std::make_unique<gui::AlarmPopupRequestParams>(gui::AlarmPopupType::AlarmRing, std::move(r)));
         return true;
     }
 

@@ -6,6 +6,7 @@
 #include "application-phonebook/data/PhonebookStyle.hpp"
 #include "application-phonebook/models/PhonebookModel.hpp"
 #include "application-phonebook/widgets/PhonebookListView.hpp"
+#include "application-phonebook/models/SearchModel.hpp"
 
 #include <AppWindow.hpp>
 #include <ListView.hpp>
@@ -18,6 +19,8 @@ namespace gui
 
     class PhonebookMainWindow : public AppWindow
     {
+        std::shared_ptr<SearchModel> model = nullptr;
+
       protected:
         std::shared_ptr<PhonebookModel> phonebookModel = nullptr;
         ListView *contactsList                         = nullptr;
@@ -32,7 +35,7 @@ namespace gui
         void onListFilled();
 
       public:
-        PhonebookMainWindow(app::ApplicationCommon *app);
+        PhonebookMainWindow(app::ApplicationCommon *app, std::shared_ptr<SearchModel> model);
         virtual ~PhonebookMainWindow();
 
         // virtual methods
@@ -45,7 +48,6 @@ namespace gui
         void buildInterface() override;
         void destroyInterface() override;
 
-        bool isSearchRequested() const;
         void HandleFilteringByLetter(const InputEvent &inputEvent);
     };
 

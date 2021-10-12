@@ -7,8 +7,12 @@
 #include "SwitchData.hpp"
 #include "gui/input/InputEvent.hpp"
 #include "BaseAppMessage.hpp"
+#include "AppSwitchReason.hpp"
+#include "AppStartupReason.hpp"
 #include <memory>
 #include <string>
+#include <service-appmgr/Actions.hpp>
+#include <utility>
 
 namespace app
 {
@@ -49,14 +53,12 @@ namespace app
     // target
     class AppSwitchMessage : public AppMessage
     {
-      protected:
         // name of the application to which switch is performed.
         std::string targetApplication;
         // name of the window to which switch should be performed.
         std::string targetWindow;
         // optional data for the target window.
         std::unique_ptr<gui::SwitchData> data;
-
         StartupReason startupReason = StartupReason::Launch;
 
       public:
@@ -112,6 +114,8 @@ namespace app
 
     class AppSwitchWindowMessage : public AppMessage
     {
+        bool toPopup = false;
+
       protected:
         std::string window;
         std::string senderWindow;
@@ -129,7 +133,23 @@ namespace app
                                SwitchReason reason   = SwitchReason::SwitchRequest)
             : AppMessage(MessageType::AppSwitchWindow), window{window},
               senderWindow{senderWindow}, command{command}, reason{reason}, data{std::move(data)} {};
+
+        AppSwitchWindowMessage(const std::string &window,
+                               std::unique_ptr<gui::SwitchData> data,
+                               SwitchReason reason = SwitchReason::SwitchRequest,
+                               bool toPopup        = false)
+            : AppSwitchWindowMessage(
+                  window, "", std::forward<decltype(data)>(data), gui::ShowMode::GUI_SHOW_INIT, reason)
+        {
+            this->toPopup = toPopup;
+        }
+
         virtual ~AppSwitchWindowMessage() = default;
+
+        [[nodiscard]] bool toPopupRequest() const
+        {
+            return toPopup;
+        }
 
         const std::string &getWindowName() const
         {

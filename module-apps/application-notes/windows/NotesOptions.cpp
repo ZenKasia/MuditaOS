@@ -12,6 +12,7 @@
 #include <i18n/i18n.hpp>
 
 #include <module-gui/gui/widgets/text/Text.hpp>
+#include <AppWindowConsts.hpp>
 
 namespace app::notes
 {

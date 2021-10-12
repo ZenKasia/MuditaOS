@@ -7,6 +7,7 @@
 #include "Option.hpp"
 #include "windows/DialogMetadata.hpp"
 #include "messages/DialogMetadataMessage.hpp"
+#include <AppWindowConsts.hpp>
 
 namespace app::alarmClock
 {

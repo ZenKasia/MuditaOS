@@ -65,14 +65,9 @@ namespace app
             auto msg = dynamic_cast<db::NotificationMessage *>(msgl);
             LOG_DEBUG("Received notification");
             if (msg != nullptr) {
-                // window-specific actions
-                if (msg->interface == db::Interface::Name::Contact) {
-                    for (auto &[name, window] : windowsStack) {
-                        window->onDatabaseMessage(msg);
-                    }
-                }
-                // app-wide actions
-                // <none>
+                handleUI_DBNotification(msgl, [&](sys::Message * /*unused*/, const std::string & /*unused*/) {
+                    return msg->interface == db::Interface::Name::Contact;
+                });
                 return std::make_shared<sys::ResponseMessage>();
             }
         }
@@ -96,8 +91,9 @@ namespace app
 
     void ApplicationPhonebook::createUserInterface()
     {
-        windowsFactory.attach(gui::name::window::main_window, [](ApplicationCommon *app, const std::string &name) {
-            return std::make_unique<gui::PhonebookMainWindow>(app);
+        windowsFactory.attach(gui::name::window::main_window, [&](ApplicationCommon *app, const std::string &name) {
+            searchModel = std::make_shared<SearchModel>();
+            return std::make_unique<gui::PhonebookMainWindow>(app, searchModel);
         });
         windowsFactory.attach(gui::window::name::contact, [](ApplicationCommon *app, const std::string &name) {
             return std::make_unique<gui::PhonebookContactDetails>(app);
@@ -149,19 +145,15 @@ namespace app
 
     void ApplicationPhonebook::onSearchRequest(const std::string &searchFilter)
     {
-        auto searchModel = std::make_unique<PhonebookModel>(this, searchFilter);
+        auto phonebookModel = std::make_unique<PhonebookModel>(this, searchFilter);
 
-        LOG_DEBUG("Search results count: %d", searchModel->requestRecordsCount());
-        if (searchModel->requestRecordsCount() > 0) {
-            auto main_window =
-                dynamic_cast<gui::PhonebookMainWindow *>(windowsStack.get(gui::name::window::main_window));
-            if (main_window == nullptr) {
-                LOG_ERROR("Failed to get main window.");
-                return;
-            }
-
-            if (main_window->isSearchRequested()) {
-                searchModel->messagesSelectCallback = [=](gui::PhonebookItem *item) {
+        LOG_DEBUG("Search results count: %d", phonebookModel->requestRecordsCount());
+        if (not searchModel) {
+            LOG_ERROR("application not build, model not available");
+        }
+        if (phonebookModel->requestRecordsCount() > 0) {
+            if (searchModel->requestedSearch()) {
+                phonebookModel->messagesSelectCallback = [=](gui::PhonebookItem *item) {
                     std::unique_ptr<PhonebookSearchRequest> data = std::make_unique<PhonebookSearchRequest>();
                     data->result                                 = item->contact;
                     data->setDescription("PhonebookSearchRequest");
@@ -170,7 +162,7 @@ namespace app
                 };
             }
             LOG_DEBUG("Switching to search results window.");
-            auto data = std::make_unique<PhonebookSearchResultsData>(std::move(searchModel));
+            auto data = std::make_unique<PhonebookSearchResultsData>(std::move(phonebookModel));
             switchWindow("SearchResults", gui::ShowMode::GUI_SHOW_INIT, std::move(data));
         }
         else {

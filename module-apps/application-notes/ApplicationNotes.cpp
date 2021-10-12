@@ -47,12 +47,9 @@ namespace app
 
         if (msgl->messageType == MessageType::DBServiceNotification) {
             if (auto msg = dynamic_cast<db::NotificationMessage *>(msgl); msg != nullptr) {
-                // window-specific actions
-                if (msg->interface == db::Interface::Name::Notes) {
-                    for (auto &[name, window] : windowsStack) {
-                        window->onDatabaseMessage(msg);
-                    }
-                }
+                handleUI_DBNotification(msgl, [&](sys::Message * /*unused*/, const std::string & /*unused*/) {
+                    return msg->interface == db::Interface::Name::Notes;
+                });
                 return std::make_shared<sys::ResponseMessage>();
             }
         }

@@ -1,0 +1,16 @@
+// Copyright (c) 2017-2021, Mudita Sp. z.o.o. All rights reserved.
+// For licensing, see https://github.com/mudita/MuditaOS/LICENSE.md
+
+#pragma once
+
+namespace app
+{
+    class WindowManager
+    {
+        int countPopup = 0;
+
+      public:
+        /// how many popups are actually in windows stack
+        unsigned int popupCount();
+    };
+} // namespace app

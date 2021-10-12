@@ -47,6 +47,8 @@ namespace app
                               std::make_shared<SIMConfiguration>(SIMConfiguration::DisplayMode::OnlyInactiveState));
         bus.channels.push_back(sys::BusChannel::ServiceDBNotifications);
 
+        // TODO TODO install here: blockAllPopups
+
         addActionReceiver(app::manager::actions::ShowMMIResponse, [this](auto &&data) {
             switchWindow(app::window::name::desktop_mmi_pull, std::move(data));
             return actionHandled();
@@ -195,14 +197,6 @@ namespace app
             return true;
         }
         return false;
-    }
-
-    bool ApplicationDesktop::isPopupPermitted([[maybe_unused]] gui::popup::ID popupId) const
-    {
-        if (blockAllPopups) {
-            return false;
-        }
-        return true;
     }
 
     void ApplicationDesktop::handleLowBatteryNotification(manager::actions::ActionParamsPtr &&data)

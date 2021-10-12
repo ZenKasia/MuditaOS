@@ -103,6 +103,7 @@ namespace locks
     void PhoneLockHandler::phoneUnlockPopupsCloseAction()
     {
         if (!isPhoneLocked()) {
+            LOG_INFO("HERE UNLOCK DONE!");
             app::manager::Controller::sendAction(owner,
                                                  app::manager::actions::AbortPopup,
                                                  std::make_unique<gui::PopupRequestParams>(gui::popup::ID::PhoneLock));
@@ -110,6 +111,9 @@ namespace locks
                 owner,
                 app::manager::actions::AbortPopup,
                 std::make_unique<gui::PopupRequestParams>(gui::popup::ID::PhoneLockInfo));
+        }
+        else {
+            LOG_INFO("PHONE UNLOCK NOT DONE");
         }
 
         app::manager::Controller::sendAction(owner,

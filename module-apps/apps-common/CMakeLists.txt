@@ -6,6 +6,7 @@ add_library(apps-common STATIC)
 target_sources(apps-common
     PRIVATE
         ApplicationCommon.cpp
+        ApplicationCommonPopupBlueprints.cpp
         AsyncTask.cpp
         AudioOperations.cpp
         AudioOperations.hpp
@@ -15,6 +16,7 @@ target_sources(apps-common
         StatusBarManager.cpp
         WindowsFactory.cpp
         audio/SoundsPlayer.cpp
+        WindowsStack.cpp
         notifications/NotificationData.cpp
         notifications/NotificationListItem.cpp
         notifications/NotificationProvider.cpp
@@ -55,6 +57,10 @@ target_sources(apps-common
         windows/BrightnessWindow.cpp
         windows/Dialog.cpp
         windows/OptionWindow.cpp
+        PopupBlueprintFactory.cpp
+        WindowsPopupQueue.cpp
+        WindowsPopupFilter.cpp
+        WindowsPopupRequest.cpp
 
     PUBLIC
         ApplicationCommon.hpp
