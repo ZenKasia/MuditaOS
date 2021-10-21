@@ -84,19 +84,16 @@ namespace gui
         microphoneIcon                    = new MicrophoneIcon(iconsBox);
         microphoneIcon->activatedCallback = [=](gui::Item &item) {
             microphoneIcon->setNext();
-            application->refreshWindow(RefreshModes::GUI_REFRESH_FAST);
             LOG_INFO("Mic activated %d", static_cast<int>(microphoneIcon->get()));
 
             microphoneIcon->get() == MicrophoneIconState::MUTED ? interface->sendAudioEvent(AudioEvent::Mute)
                                                                 : interface->sendAudioEvent(AudioEvent::Unmute);
-
             return true;
         };
 
         speakerIcon                    = new SpeakerIcon(iconsBox);
         speakerIcon->activatedCallback = [=](gui::Item &item) {
             speakerIcon->setNext();
-            application->refreshWindow(RefreshModes::GUI_REFRESH_FAST);
             LOG_INFO("Speaker activated %d", static_cast<int>(speakerIcon->get()));
 
             switch (speakerIcon->get()) {
@@ -112,7 +109,6 @@ namespace gui
             default:
                 break;
             }
-
             return true;
         };
 
@@ -400,9 +396,7 @@ namespace gui
             return true;
         }
         else {
-            auto ret = AppWindow::onInput(inputEvent);
-            iconsBox->resizeItems();
-            return ret;
+            return AppWindow::onInput(inputEvent);
         }
     }
 

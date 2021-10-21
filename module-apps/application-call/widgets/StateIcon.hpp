@@ -61,6 +61,7 @@ namespace gui
             text->setText(utils::translate(data.at(state).second));
             text->setMinimumWidthToFitText(utils::translate(data.at(state).second));
             text->setMinimumHeightToFitText();
+            text->informContentChanged();
         }
 
         T get() const
