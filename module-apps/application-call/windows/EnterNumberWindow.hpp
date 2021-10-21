@@ -9,9 +9,6 @@ namespace gui
 {
     class EnterNumberWindow : public NumberWindow
     {
-      private:
-        gui::AddContactIcon *newContactIcon = nullptr;
-
       public:
         EnterNumberWindow(app::ApplicationCommon *app,
                           app::EnterNumberWindowInterface *interface,

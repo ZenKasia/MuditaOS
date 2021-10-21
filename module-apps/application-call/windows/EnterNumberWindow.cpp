@@ -35,9 +35,17 @@ namespace gui
         bottomBar->setText(BottomBar::Side::CENTER, utils::translate("common_add"));
         bottomBar->setText(BottomBar::Side::RIGHT, utils::translate("app_call_clear"));
 
-        newContactIcon                    = new gui::AddContactIcon(this, newContactIcon::x, newContactIcon::y);
+        auto iconsBox = new HBox(
+            this, style::window::default_left_margin, iconsBox::y, style::window::default_body_width, iconsBox::h);
+
+        iconsBox->setAlignment(Alignment(Alignment::Horizontal::Center, Alignment::Vertical::Top));
+        iconsBox->setEdges(RectangleEdge::None);
+
+        auto newContactIcon = new ImageBoxWithText(
+            iconsBox, new Image("cross", ImageTypeSpecifier::None), utils::translate("app_call_contact"));
         newContactIcon->activatedCallback = [=](gui::Item &item) { return addNewContact(); };
         setFocusItem(newContactIcon);
+        iconsBox->resizeItems();
     }
 
     status_bar::Configuration EnterNumberWindow::configureStatusBar(status_bar::Configuration appConfiguration)

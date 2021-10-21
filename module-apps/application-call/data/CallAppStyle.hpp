@@ -83,20 +83,11 @@ namespace callAppStyle
             inline constexpr auto w = 240U;
             inline constexpr auto h = 20U;
         } // namespace durationLabel
-        namespace speakerIcon
-        {
-            inline constexpr auto x = 260U - icon::x_margin;
-            inline constexpr auto y = 411U;
-        } // namespace speakerIcon
-        namespace microphoneIcon
-        {
-            inline constexpr auto x = 120U - icon::x_margin;
-            inline constexpr auto y = 411U;
-        } // namespace microphoneIcon
-        namespace sendMessageIcon
-        {
-            inline constexpr auto x = 190U - icon::x_margin;
-            inline constexpr auto y = 411U;
-        } // namespace sendMessageIcon
     }     // namespace callWindow
+
+    namespace iconsBox
+    {
+        inline constexpr auto y = 411U;
+        inline constexpr auto h = 100U;
+    } // namespace iconsBox
 } // namespace callAppStyle
