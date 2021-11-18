@@ -62,11 +62,6 @@ namespace backlight
     auto Handler::processKeypadRequest(bsp::keypad_backlight::Action action) -> bool
     {
         switch (action) {
-        case bsp::keypad_backlight::Action::turnOn: {
-            stopKeypadTimer();
-            setKeypadLightState(bsp::keypad_backlight::State::on);
-            return bsp::keypad_backlight::turnOnAll();
-        }
         case bsp::keypad_backlight::Action::turnOff: {
             stopKeypadTimer();
             setKeypadLightState(bsp::keypad_backlight::State::off);
@@ -101,9 +96,6 @@ namespace backlight
         switch (keypadLightState) {
         case bsp::keypad_backlight::State::off:
             processKeypadRequest(bsp::keypad_backlight::Action::turnOff);
-            break;
-        case bsp::keypad_backlight::State::on:
-            processKeypadRequest(bsp::keypad_backlight::Action::turnOn);
             break;
         case bsp::keypad_backlight::State::activeMode:
             processKeypadRequest(bsp::keypad_backlight::Action::turnOnActiveMode);
